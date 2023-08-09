@@ -77,20 +77,17 @@ const Header = () => {
   return (
     <header className={`header ${mobileMenu ? "mobileView" : ""} ${show}`}>
       <ContentWrapper>
-        <div className="logo">
+        <a className="logo" href="https://github.com/imvikashkk/mtX_Movie_and_TV_Shows" target="_blank">
           <img src={logo} alt="" className="logoImg"/>
           <span className="logoText">mtX</span>
-        </div>
+        </a>
         <ul className="menuItems">
-        <li className="menuItem">
-               <FaHome onClick={()=>navigate("/")} />
-          </li>
+          <li className="menuItem"><FaHome onClick={()=>navigate("/")} /></li>
           <li className="menuItem" onClick={(e)=>navigationHandler("movie")}>Movies</li>
           <li className="menuItem" onClick={(e)=>navigationHandler("tvshow")}>TV Shows</li>
-          <li className="menuItem">
-            <HiOutlineSearch onClick={handleOpenSearch}/>
-          </li>
+          <li className="menuItem"><HiOutlineSearch onClick={handleOpenSearch}/></li>
         </ul>
+
         <div className="mobileMenuItems">
           <FaHome onClick={()=>navigate("/")} />
           <HiOutlineSearch onClick={handleOpenSearch} />
@@ -100,6 +97,7 @@ const Header = () => {
             <SlMenu onClick={handleOpenMobileMenu} />
           )}
         </div>
+        
       </ContentWrapper>
       {
         showSearch ? (

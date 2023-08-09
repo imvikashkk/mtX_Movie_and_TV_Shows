@@ -1,4 +1,18 @@
+@mixin xxsm {
+    @media only screen and (max-width: 280px) {
+        @content;
+    }
+}
+
+@mixin xsm {
+    @media only screen and (max-width: 380px) {
+        @content;
+    }
+}
+
+
 @mixin sm {
+    /* Default Use For Mobile First Use Web App */
     @media only screen and (min-width: 640px) {
         @content;
     }

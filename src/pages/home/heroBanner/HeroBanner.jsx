@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./style.scss";
@@ -14,6 +14,11 @@ const HeroBanner = () => {
     const navigate = useNavigate();
     const { url } = useSelector((state) => state.home);
     const { data, loading } = useFetch("/movie/upcoming");
+    const [placeHolder, setPlaceHolder] = useState("");
+    const pH = "Search for a movie or tv show...";
+    const currPH = useRef(-1)
+    const inFC = useRef()
+    const [placeHolderShow, setPlaceHolderShow] = useState("placeHolder")
 
     useEffect(() => {
         const bg =
@@ -27,6 +32,37 @@ const HeroBanner = () => {
             navigate(`/search/${query}`);
         }
     };
+
+    const searchBtnHandle = ()=>{
+        if(query.trim().length > 0){
+            navigate(`/search/${query}`);  
+        }
+    }
+   
+    
+    useEffect(()=>{
+        const ss = setInterval(()=>{
+            if(pH.length == currPH.current+1){
+                currPH.current = -1
+                setPlaceHolder("")
+            }
+            currPH.current += 1;
+                setPlaceHolder((prev)=>prev+pH[currPH.current]);
+        },300)
+        const fcIn =  inFC.current.addEventListener("focusin", (e) => {
+            setPlaceHolderShow("placeHolderOff")
+        });
+        const fcOut =  inFC.current.addEventListener("focusout", (e) => {
+            setPlaceHolderShow("placeHolder")
+            currPH.current = -1
+            setPlaceHolder("")
+        });
+        return ()=>{
+            clearInterval(ss);
+            removeEventListener("focusin", fcIn);
+            removeEventListener("focusout", fcOut);
+        }
+    },[])
 
     return (
         <div className="heroBanner">
@@ -47,11 +83,14 @@ const HeroBanner = () => {
                     <div className="searchInput">
                         <input
                             type="text"
-                            placeholder="Search for a movie or tv show...."
                             onChange={(e) => setQuery(e.target.value)}
                             onKeyUp={searchQueryHandler}
+                            ref={inFC}
+                            id="inFC"
+                            name="inFC"
                         />
-                        <button>Search</button>
+                        <label htmlFor="inFC" className={placeHolderShow}>{placeHolder}</label>
+                        <button onClick={searchBtnHandle}>Search</button>
                     </div>
                 </div>
             </ContentWrapper>
