@@ -53,9 +53,11 @@ const HeroBanner = () => {
             setPlaceHolderShow("placeHolderOff")
         });
         const fcOut =  inFC.current.addEventListener("focusout", (e) => {
-            setPlaceHolderShow("placeHolder")
-            currPH.current = -1
-            setPlaceHolder("")
+            if(inFC.current.value.length == 0){
+                setPlaceHolderShow("placeHolder")
+                currPH.current = -1
+                setPlaceHolder("")
+            }
         });
         return ()=>{
             clearInterval(ss);
